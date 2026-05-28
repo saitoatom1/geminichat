@@ -323,59 +323,68 @@ button {
 @media (max-width: 768px) {
 
     body {
-
         align-items:flex-start;
-
         padding:10px;
     }
 
     .container {
-
         padding:0;
-
         width:100%;
     }
 
     .chat-box {
-
         padding:14px;
-
         border-radius:16px;
     }
 
     h1 {
-
         font-size:24px;
     }
 
     #chat {
-
         height:65vh;
     }
 
     .message {
-
         font-size:15px;
     }
 
     .user {
-
         margin-left:5%;
     }
 
     .ai {
-
         margin-right:5%;
     }
 
+    /* ★ここ重要 */
     .input-area {
 
-        flex-direction:column;
+        display:flex;
+
+        flex-direction:row;
+
+        gap:8px;
     }
 
+    /* 入力欄 */
+    #message {
+
+        flex:1;
+
+        min-width:0;
+    }
+
+    /* ボタン */
     button {
 
-        width:100%;
+        width:auto;
+
+        white-space:nowrap;
+
+        padding:12px 14px;
+
+        font-size:14px;
     }
 }
 
