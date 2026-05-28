@@ -85,126 +85,365 @@ def home():
 
     return """
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
-<meta charset="utf-8">
-<title>Gemini Chat</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sumire AI Chat</title>
 
 <style>
 
+*{
+    box-sizing:border-box;
+}
 
 body {
 
-    /* ★ここ復活（背景画像） */
+    margin:0;
+    padding:0;
+
+    font-family: Arial, sans-serif;
+
     background-image: url('/static/bg.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-margin: 0;
-    background-padding: 0;
-    background-width: 100%;
-    background-height: 100%;
 
-    font-family: Arial;
-    max-width: 900px;
-    margin: auto;
+    min-height:100vh;
 
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+}
+
+.container {
+
+    width:100%;
+    max-width:700px;
+
+    padding:15px;
+}
+
+.chat-box {
+
+    background: rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(12px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.25);
+
+}
+
+h1 {
+
+    text-align:center;
+
+    margin-top:0;
+
+    margin-bottom:20px;
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    color: rgba(255,255,255,0.92);
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.25),
+        0 0 20px rgba(255,255,255,0.15);
 }
 
 #chat {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    height: 350px;
-    overflow-y: auto;
-    padding: 20px;
-    border-radius: 10px;
+
+    height:60vh;
+
+    overflow-y:auto;
+
+    padding:10px;
+
+    border-radius:15px;
+
+    background: rgba(0,0,0,0.12);
+
+    margin-bottom:15px;
+
+    scroll-behavior:smooth;
+}
+
+.message {
+
+    margin:12px 0;
+
+    padding:14px;
+
+    border-radius:15px;
+
+    line-height:1.6;
+
+    white-space:pre-wrap;
+
+    word-wrap:break-word;
+
+    animation:fadeIn 0.25s ease;
 }
 
 .user {
-    background: #dbeafe;
-    padding: 10px;
-    border-radius: 10px;
-    margin: 10px 0;
-    white-space: pre-wrap;
+
+    background:#2563eb;
+
+    margin-left:15%;
+
+    color:white;
 }
 
 .ai {
-    background: #e5e7eb;
-    padding: 10px;
-    border-radius: 10px;
-    margin: 10px 0;
-    white-space: pre-wrap;
+
+    background:rgba(255,255,255,0.18);
+
+    margin-right:15%;
+
+    color:white;
+}
+
+.sender {
+
+    font-weight:bold;
+
+    margin-bottom:6px;
+
+    opacity:0.9;
+}
+
+.input-area {
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:10px;
 }
 
 #message {
-    width: 80%;
-    padding: 10px;
-    font-size: 16px;
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:14px;
+
+    outline:none;
+
+    font-size:16px;
+
+    background: rgba(255,255,255,0.18);
+
+    color:white;
+
+    backdrop-filter: blur(8px);
+}
+
+#message::placeholder {
+    color: rgba(255,255,255,0.7);
 }
 
 button {
-    padding: 10px;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:14px 18px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    transition:0.2s;
 }
 
+.send-btn {
 
-h1 {
-    color: rgba(255,255,255,0.75);
-    text-align: center;
+    background:#2563eb;
 
-    /* ガラスっぽい光 */
-    text-shadow:
-        0 0 8px rgba(255,255,255,0.35),
-        0 0 18px rgba(255,255,255,0.25);
-
-    /* ガラス感（軽い透過） */
-    backdrop-filter: blur(6px);
-    display: inline-block;
-
-    padding: 6px 16px;
-    border-radius: 12px;
-
-    border: 1px solid rgba(255,255,255,0.12);
-
-    letter-spacing: 2px;
+    color:white;
 }
-#h1 {   
-    color: white;
-    text-align: center;
-    text-shadow: 2px 2px 10px black;
+
+.send-btn:hover {
+
+    transform:scale(1.03);
 }
+
+.clear-btn {
+
+    background:#ef4444;
+
+    color:white;
+}
+
+.clear-btn:hover {
+
+    transform:scale(1.03);
+}
+
+@keyframes fadeIn {
+
+    from {
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   スマホ対応
+========================= */
+
+@media (max-width: 768px) {
+
+    body {
+
+        align-items:flex-start;
+
+        padding:10px;
+    }
+
+    .container {
+
+        padding:0;
+
+        width:100%;
+    }
+
+    .chat-box {
+
+        padding:14px;
+
+        border-radius:16px;
+    }
+
+    h1 {
+
+        font-size:24px;
+    }
+
+    #chat {
+
+        height:65vh;
+    }
+
+    .message {
+
+        font-size:15px;
+    }
+
+    .user {
+
+        margin-left:5%;
+    }
+
+    .ai {
+
+        margin-right:5%;
+    }
+
+    .input-area {
+
+        flex-direction:column;
+    }
+
+    button {
+
+        width:100%;
+    }
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>Sumire AI Chat</h1>
+<div class="container">
 
-<div id="chat"></div>
+    <div class="chat-box">
 
-<br>
+        <h1>Sumire AI Chat</h1>
 
-<input type="text" id="message" placeholder="メッセージを入力">
+        <div id="chat"></div>
 
-<button onclick="sendMessage()">送信</button>
-<button onclick="clearChat()">履歴削除</button>
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="message"
+                placeholder="メッセージを入力..."
+            >
+
+            <button
+                class="send-btn"
+                onclick="sendMessage()"
+            >
+                送信
+            </button>
+
+            <button
+                class="clear-btn"
+                onclick="clearChat()"
+            >
+                履歴削除
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 
 window.onload = async function () {
+
     const res = await fetch("/history")
+
     const data = await res.json()
 
     data.forEach(([role, content]) => {
-        addMessage(role === "user" ? "あなた" : "Gemini", content, role === "user" ? "user" : "ai")
+
+        addMessage(
+            role === "user" ? "あなた" : "Sumire AI",
+            content,
+            role === "user" ? "user" : "ai"
+        )
     })
 }
 
 async function sendMessage() {
 
     const input = document.getElementById("message")
-    const message = input.value
+
+    const message = input.value.trim()
 
     if (!message) return
 
@@ -212,15 +451,33 @@ async function sendMessage() {
 
     input.value = ""
 
-    const response = await fetch("/chat", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message})
-    })
+    try {
 
-    const data = await response.json()
+        const response = await fetch("/chat", {
 
-    addMessage("Gemini", data.reply, "ai")
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                message
+            })
+        })
+
+        const data = await response.json()
+
+        addMessage("Sumire AI", data.reply, "ai")
+
+    } catch (error) {
+
+        addMessage(
+            "System",
+            "通信エラーが発生しました",
+            "ai"
+        )
+    }
 }
 
 function addMessage(sender, text, className) {
@@ -229,9 +486,13 @@ function addMessage(sender, text, className) {
 
     const div = document.createElement("div")
 
-    div.className = className
+    div.className = "message " + className
 
-    div.innerHTML = "<b>" + sender + "</b><br>" + text
+    div.innerHTML =
+        "<div class='sender'>" +
+        sender +
+        "</div>" +
+        text
 
     chat.appendChild(div)
 
@@ -240,14 +501,21 @@ function addMessage(sender, text, className) {
 
 async function clearChat() {
 
-    await fetch("/clear", {method: "POST"})
+    await fetch("/clear", {
+        method:"POST"
+    })
 
     document.getElementById("chat").innerHTML = ""
 }
 
-document.getElementById("message")
-.addEventListener("keydown", function(event) {
+document
+.getElementById("message")
+.addEventListener("keypress", function(event) {
+
     if (event.key === "Enter") {
+
+        event.preventDefault()
+
         sendMessage()
     }
 })
