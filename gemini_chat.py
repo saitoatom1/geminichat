@@ -35,22 +35,28 @@ conn.commit()
 # DB操作
 # =========================
 def save_message(role, content):
+
     cursor.execute(
         "INSERT INTO messages (role, content) VALUES (?, ?)",
         (role, content)
     )
+
     conn.commit()
 
 
 def load_messages():
+
     cursor.execute(
         "SELECT role, content FROM messages ORDER BY id ASC"
     )
+
     return cursor.fetchall()
 
 
 def clear_messages():
+
     cursor.execute("DELETE FROM messages")
+
     conn.commit()
 
 # =========================
@@ -66,8 +72,10 @@ def generate_ai_response(user_message):
 """
 
     for role, content in messages:
+
         if role == "user":
             prompt += f"ユーザー: {content}\n"
+
         else:
             prompt += f"AI: {content}\n"
 
@@ -91,7 +99,10 @@ def home():
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Sumire AI Chat</title>
 
@@ -117,7 +128,9 @@ body {
     min-height:100vh;
 
     display:flex;
+
     justify-content:center;
+
     align-items:center;
 
     color:white;
@@ -126,6 +139,7 @@ body {
 .container {
 
     width:100%;
+
     max-width:700px;
 
     padding:15px;
@@ -145,7 +159,6 @@ body {
 
     box-shadow:
         0 8px 32px rgba(0,0,0,0.25);
-
 }
 
 h1 {
@@ -165,6 +178,15 @@ h1 {
     text-shadow:
         0 0 10px rgba(255,255,255,0.25),
         0 0 20px rgba(255,255,255,0.15);
+}
+
+.top-bar {
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-bottom:10px;
 }
 
 #chat {
@@ -233,8 +255,6 @@ h1 {
     display:flex;
 
     gap:10px;
-
-    margin-top:10px;
 }
 
 #message {
@@ -259,6 +279,7 @@ h1 {
 }
 
 #message::placeholder {
+
     color: rgba(255,255,255,0.7);
 }
 
@@ -291,12 +312,20 @@ button {
     transform:scale(1.03);
 }
 
+
 .clear-btn {
 
     background:#ef4444;
 
     color:white;
+
+    padding:6px 10px;
+
+    font-size:12px;
+
+    border-radius:8px;
 }
+
 
 .clear-btn:hover {
 
@@ -306,12 +335,16 @@ button {
 @keyframes fadeIn {
 
     from {
+
         opacity:0;
+
         transform:translateY(8px);
     }
 
     to {
+
         opacity:1;
+
         transform:translateY(0);
     }
 }
@@ -323,41 +356,51 @@ button {
 @media (max-width: 768px) {
 
     body {
+
         align-items:flex-start;
+
         padding:10px;
     }
 
     .container {
+
         padding:0;
+
         width:100%;
     }
 
     .chat-box {
+
         padding:14px;
+
         border-radius:16px;
     }
 
     h1 {
+
         font-size:24px;
     }
 
     #chat {
+
         height:65vh;
     }
 
     .message {
+
         font-size:15px;
     }
 
     .user {
+
         margin-left:5%;
     }
 
     .ai {
+
         margin-right:5%;
     }
 
-    /* ★ここ重要 */
     .input-area {
 
         display:flex;
@@ -367,7 +410,6 @@ button {
         gap:8px;
     }
 
-    /* 入力欄 */
     #message {
 
         flex:1;
@@ -375,7 +417,6 @@ button {
         min-width:0;
     }
 
-    /* ボタン */
     button {
 
         width:auto;
@@ -400,6 +441,17 @@ button {
 
         <h1>Sumire AI Chat</h1>
 
+        <div class="top-bar">
+
+            <button
+                class="clear-btn"
+                onclick="clearChat()"
+            >
+                履歴削除
+            </button>
+
+        </div>
+
         <div id="chat"></div>
 
         <div class="input-area">
@@ -415,13 +467,6 @@ button {
                 onclick="sendMessage()"
             >
                 送信
-            </button>
-
-            <button
-                class="clear-btn"
-                onclick="clearChat()"
-            >
-                履歴削除
             </button>
 
         </div>
@@ -542,6 +587,7 @@ document
 def chat():
 
     data = request.json
+
     user_message = data["message"]
 
     save_message("user", user_message)
@@ -555,12 +601,15 @@ def chat():
 
 @app.route("/history")
 def history():
+
     return jsonify(load_messages())
 
 
 @app.route("/clear", methods=["POST"])
 def clear():
+
     clear_messages()
+
     return jsonify({"status": "ok"})
 
 
@@ -568,4 +617,5 @@ def clear():
 # RUN
 # =========================
 if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=5000)
